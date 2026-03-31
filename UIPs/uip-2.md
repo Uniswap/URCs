@@ -2,7 +2,7 @@
 uip: 2
 title: Example Test Proposal
 author: Test Author (@test)
-status: Draft
+status: Approved
 created: 2026-03-30
 ---
 
