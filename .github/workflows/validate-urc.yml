@@ -1,9 +1,9 @@
-name: Validate UIPs
+name: Validate URCs
 
 on:
   pull_request:
     paths:
-      - 'UIPs/*.md'
+      - 'URCs/*.md'
 
 jobs:
   validate:
@@ -11,15 +11,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Get changed UIP files
+      - name: Get changed URC files
         id: changed
         run: |
-          FILES=$(gh pr diff ${{ github.event.pull_request.number }} --name-only | grep '^UIPs/.*\.md$' || true)
+          FILES=$(gh pr diff ${{ github.event.pull_request.number }} --name-only | grep '^URCs/.*\.md$' || true)
           echo "files=$FILES" >> "$GITHUB_OUTPUT"
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - name: Validate UIPs
+      - name: Validate URCs
         if: steps.changed.outputs.files != ''
         run: |
-          python3 scripts/validate_uip.py ${{ steps.changed.outputs.files }}
+          python3 scripts/validate_urc.py ${{ steps.changed.outputs.files }}

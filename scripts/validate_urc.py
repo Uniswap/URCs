@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Validate UIP markdown files for correct preamble and required sections."""
+"""Validate URC markdown files for correct preamble and required sections."""
 
 import re
 import sys
 import os
 
 
-REQUIRED_PREAMBLE_FIELDS = ["uip", "title", "author", "status", "created"]
+REQUIRED_PREAMBLE_FIELDS = ["urc", "title", "author", "status", "created"]
 VALID_STATUSES = ["Draft", "Discussion", "Last Call", "Final", "Superseded", "Withdrawn"]
 REQUIRED_SECTIONS = ["Abstract", "Specification", "Rationale", "Security Considerations", "Copyright"]
 
@@ -51,23 +51,23 @@ def validate_sections(content):
 
 
 def validate_filename(filepath, preamble):
-    """Check filename matches uip-N.md and N matches preamble. Returns list of error strings."""
+    """Check filename matches urc-N.md and N matches preamble. Returns list of error strings."""
     errors = []
     basename = os.path.basename(filepath)
-    match = re.match(r"^uip-(\d+)\.md$", basename)
+    match = re.match(r"^urc-(\d+)\.md$", basename)
     if not match:
-        errors.append(f"Invalid filename format: '{basename}'. Expected 'uip-N.md'.")
+        errors.append(f"Invalid filename format: '{basename}'. Expected 'urc-N.md'.")
         return errors
     file_number = match.group(1)
-    if preamble and "uip" in preamble and str(preamble["uip"]) != file_number:
+    if preamble and "urc" in preamble and str(preamble["urc"]) != file_number:
         errors.append(
-            f"Filename number ({file_number}) does not match preamble uip field ({preamble['uip']})"
+            f"Filename number ({file_number}) does not match preamble urc field ({preamble['urc']})"
         )
     return errors
 
 
 def validate_file(filepath):
-    """Run all validations on a single UIP file. Returns list of error strings."""
+    """Run all validations on a single URC file. Returns list of error strings."""
     try:
         with open(filepath, "r") as f:
             content = f.read()
@@ -83,7 +83,7 @@ def validate_file(filepath):
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: validate_uip.py <file> [file ...]", file=sys.stderr)
+        print("Usage: validate_urc.py <file> [file ...]", file=sys.stderr)
         sys.exit(1)
     all_errors = []
     for filepath in sys.argv[1:]:
@@ -94,7 +94,7 @@ def main():
         for error in all_errors:
             print(error, file=sys.stderr)
         sys.exit(1)
-    print("All UIPs valid.")
+    print("All URCs valid.")
     sys.exit(0)
 
 

@@ -1,6 +1,6 @@
 ---
-uip: <number — assigned by author, confirmed by editor>
-title: <short descriptive title — do not include the UIP number>
+urc: <number — assigned by author, confirmed by editor>
+title: <short descriptive title — do not include the URC number>
 status: Draft
 author: <name(s) and contact — GitHub handle, email, or ENS>
 created: <YYYY-MM-DD>
@@ -16,7 +16,7 @@ created: <YYYY-MM-DD>
 
 ## Specification
 
-*Describe the proposal in sufficient detail to allow it to be clearly understood and evaluated. For all UIPs, the specification defines either the proposed process, rules, or conventions, including their scope and intended effect or the technical specification, including interfaces, expected behavior, constraints, and invariants. The specification should focus on what is required, not how it is implemented.*
+*Describe the proposal in sufficient detail to allow it to be clearly understood and evaluated. For all URCs, the specification defines either the proposed process, rules, or conventions, including their scope and intended effect or the technical specification, including interfaces, expected behavior, constraints, and invariants. The specification should focus on what is required, not how it is implemented.*
 
 ## Rationale
 
@@ -28,7 +28,7 @@ created: <YYYY-MM-DD>
 
 ## Test Cases
 
-*Include test cases where they meaningfully aid understanding of the proposal. This section is primarily relevant for UIPs that define complex or sensitive behavior. This section is optional.*
+*Include test cases where they meaningfully aid understanding of the proposal. This section is primarily relevant for URCs that define complex or sensitive behavior. This section is optional.*
 
 ## Reference Implementation
 
@@ -36,7 +36,7 @@ created: <YYYY-MM-DD>
 
 ## Security Considerations
 
-*All UIPs must include this section. Address risks related to process misuse, ambiguity, or unintended effects or security assumptions, risks, and design decisions related to smart-contract behavior.*
+*All URCs must include this section. Address risks related to process misuse, ambiguity, or unintended effects or security assumptions, risks, and design decisions related to smart-contract behavior.*
 
 ## Copyright
 
