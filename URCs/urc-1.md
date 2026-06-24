@@ -2,7 +2,7 @@
 urc: 1
 title: Uniswap Request for Comment Process
 author: Daniel Gretzke (@gretzke)
-status: Final
+status: Draft
 created: 2026-03-30
 ---
 
