@@ -1,7 +1,7 @@
 ---
 urc: 4
 title: Active Liquidity Framework Hook Interface
-author: Mark Toda (@MarkToda), Daniel Gretzke (@gretzke), Alice Henshaw (@hensha256)
+author: Mark Toda (@MarkToda), Daniel Gretzke (@gretzke), Alice Henshaw (@hensha256), Chris Cashwell (@ccashwell)
 status: Draft
 extends: 2
 created: 2026-06-11
