@@ -1,7 +1,7 @@
 ---
 urc: 2
 title: Custom Accounting Hook Swap Event
-author: Mark Toda (@MarkToda), Daniel Gretzke (@gretzke), Alice Henshaw (@hensha256)
+author: Mark Toda (@MarkToda), Daniel Gretzke (@gretzke), Alice Henshaw (@hensha256), Chris Cashwell (@ccashwell)
 status: Draft
 created: 2026-06-11
 ---
