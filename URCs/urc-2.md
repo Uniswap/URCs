@@ -8,13 +8,13 @@ created: 2026-06-11
 
 ## Abstract
 
-This URC defines `HookSwap`, a canonical event through which Uniswap v4 hooks report the portion of a swap they fill through custom accounting.
+This URC defines `HookSwap`, a canonical event through which Uniswap v4 hooks report the token deltas they contribute to a swap through custom accounting.
 
 ## Motivation
 
 Uniswap v4 custom accounting allows hooks to replace or augment the core AMM swap calculation. This enables hooks that wrap assets, route to external venues, deploy active liquidity, use vaults, rehypothecate reserves, settle through off-pool balances, or implement custom liquidity mechanisms.
 
-Indexers and data systems need a swap event that reflects the actual custom-accounting token deltas. The core v4 `Swap` event reports only the portion of a swap executed by the AMM, so swaps filled partly or fully through hook accounting are only partially captured. The core event also includes AMM-specific fields such as `sqrtPriceX96`, `liquidity`, and `tick`, which may be unchanged, irrelevant, or misleading for hooks that bypass the AMM calculation.
+Indexers and data systems need a swap event that reflects the actual custom-accounting token deltas. The core v4 `Swap` event reports only the portion of a swap executed by the AMM, so swaps whose accounting is altered partly or fully through hook accounting are only partially captured. The core event also includes AMM-specific fields such as `sqrtPriceX96`, `liquidity`, and `tick`, which may be unchanged, irrelevant, or misleading for hooks that bypass the AMM calculation.
 
 ## Specification
 
@@ -22,15 +22,15 @@ The key words “MUST”, “MUST NOT”, “SHOULD”, “SHOULD NOT”, “MAY
 
 ### Scope
 
-This URC applies to Uniswap v4 hooks that fill swaps through custom accounting and want to expose a standardized swap event.
+This URC applies to Uniswap v4 hooks that use custom accounting and want to expose a standardized swap event.
 
-A custom-accounting hook is a hook that fills part or all of a swap using hook-specific accounting, for example by consuming the swap's input and supplying its output through return deltas, rather than relying solely on the core concentrated-liquidity AMM swap calculation.
+A custom-accounting hook is a hook that computes swap accounting using hook-specific logic rather than relying solely on the core concentrated-liquidity AMM swap calculation.
 
 Conformance is based on externally observable behavior: emitted events, return values, and documented semantics.
 
 ### HookSwap Event
 
-A custom-accounting hook that conforms to this URC MUST emit `HookSwap` for every successful swap in which it provides part or all of the fill.
+A custom-accounting hook that conforms to this URC MUST emit `HookSwap` for every successful swap in which it contributes a token delta, whether by filling part or all of the swap or by taking a fee on top of an AMM-executed swap.
 
 ```solidity
 event HookSwap(
@@ -83,6 +83,8 @@ For a swap filled partly by the hook and partly by the AMM, `HookSwap` reports t
 
 Consumers can compute the total amounts of a swap by adding the `HookSwap` and core `Swap` deltas. Each event covers its portion exactly once, so the sum is free of double counting.
 
+A hook that takes a fee in one of the swap tokens on top of an AMM-executed swap contributes a token delta even though it fills none of the swap, and MUST emit `HookSwap` for that delta. For a 100-unit exact-input token0 swap where the hook takes 1 token0 as a fee and the AMM fills the remainder, the core `Swap` event reports `amount0 = -99` while `HookSwap` reports `amount0 = -1`. The two sum to the `-100` total paid by the swapper.
+
 Because a hook sets its own fill through its return deltas, it can emit `HookSwap` from whichever callback finalizes its fill amounts. Emitting the event requires no additional hook permissions.
 
 ### Omitted AMM Fields
@@ -101,11 +103,11 @@ A hook MAY expose hook-specific price, inventory, reserve, routing, or strategy 
 
 ### Emission Rules
 
-A conforming custom-accounting hook MUST emit exactly one `HookSwap` event for each successful externally requested swap in which it fills part or all of the swap.
+A conforming custom-accounting hook MUST emit exactly one `HookSwap` event for each successful externally requested swap in which it contributes a token delta, by filling part or all of the swap or by taking a fee.
 
 A hook MUST NOT emit `HookSwap` for:
 
-- Swaps in which the hook provides no fill.
+- Swaps in which the hook contributes no token delta (neither a fill nor a fee).
 - Indicative quote calls.
 - Stats calls.
 - Simulation calls.
@@ -119,8 +121,8 @@ A hook MAY emit additional hook-specific events for internal execution details.
 
 A hook conforms to this URC if it:
 
-1. Fills part or all of swaps through custom accounting.
-2. Emits exactly one `HookSwap` event for each successful swap in which it provides a fill.
+1. Contributes token deltas to swaps through custom accounting.
+2. Emits exactly one `HookSwap` event for each successful swap in which it contributes a token delta.
 3. Emits the token0 and token1 deltas of its fill in pool token order.
 4. Uses the sign convention defined in this URC.
 5. Emits final fill deltas after custom-accounting adjustments and applicable fees.
@@ -214,6 +216,25 @@ HookSwap(id, sender, -50, 49, 0);
 ```
 
 The core `Swap` event reports the AMM fill of `(-50, 49)`. Adding the two events yields the swap totals of `(-100, 98)`.
+
+### Fee-Only Swap on Top of an AMM Fill
+
+Given an exact-input token0-for-token1 swap of 100 token0, where the AMM fills the swap and the hook takes 1 token0 as a fee:
+
+```solidity
+zeroForOne = true;
+amountSpecified = -100;
+hook fee: token0 delta = -1, token1 delta = 0;
+AMM fill: token0 delta = -99, token1 delta = 98;
+```
+
+The hook should emit:
+
+```solidity
+HookSwap(id, sender, -1, 0, swapFee);
+```
+
+The core `Swap` event reports the AMM fill of `(-99, 98)`. Adding the two events yields the swapper's totals of `(-100, 98)`.
 
 ## Reference Implementation
 
