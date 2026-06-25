@@ -107,7 +107,7 @@ A conforming custom-accounting hook MUST emit exactly one `HookSwap` event for e
 
 A hook MUST NOT emit `HookSwap` for:
 
-- Swaps in which the hook contributes no token delta (neither a fill nor a fee).
+- Swaps in which the hook contributes no token delta.
 - Indicative quote calls.
 - Stats calls.
 - Simulation calls.
