@@ -66,11 +66,10 @@ interface IHookStats {
         view
         returns (uint256 token0, uint256 token1);
 
-    /// @notice The hook whose stats this contract reports for a given pool.
-    /// @param key The pool key for the specific pool.
+    /// @notice The hook whose stats this contract reports.
     /// @return The hook address, or the contract's own address when the
     ///         hook implements the interface directly.
-    function hook(PoolKey calldata key) external view returns (address);
+    function hook() external view returns (address);
 }
 ```
 
@@ -137,13 +136,11 @@ For a pool key that does not belong to the hook or stats contract, `getEffective
 
 ### `hook`
 
-`hook` returns the address of the hook whose stats the contract reports for the specified pool. Taking a `PoolKey` allows a single stats contract to serve multiple hooks, for example hooks deployed by a shared factory, by resolving the correct hook per pool.
+`hook` returns the address of the hook whose stats the contract reports.
 
 A hook that implements `IHookStats` directly MUST return its own address.
 
-A separate stats contract MUST return the address of the hook it reports for the specified pool.
-
-For a pool key that does not belong to the hook or stats contract, `hook` SHOULD revert with a descriptive error.
+A separate stats contract MUST return the address of the hook it reports for.
 
 When the stats provider's address equals the pool's hook address (`key.hooks`), the association between the hook and its stats is authoritative. For separate stats contracts, the returned value is self-reported, and integrators can use it to verify a candidate stats contract against a pool's hook before use.
 
@@ -168,7 +165,7 @@ A hook or stats contract conforms to this URC if it:
 1. Implements `IHookStats`.
 2. Reports total reserves through `getReserves`.
 3. Reports immediately swappable liquidity through `getEffectiveLiquidity`.
-4. Reports the hook it serves for a given pool through `hook`, returning its own address when the hook implements `IHookStats` directly.
+4. Reports the hook it serves through `hook`, returning its own address when the hook implements `IHookStats` directly.
 5. Returns values denominated in token0 and token1 units, or documents any different accounting basis.
 6. Reverts with a descriptive error for pool keys that do not belong to it.
 7. Ensures effective liquidity is less than or equal to total reserves for each token.
@@ -204,7 +201,7 @@ Requiring ERC-165 gives integrators a uniform, on-chain way to check for `IHookS
 
 ### Hook Pointer
 
-Every stats provider reports the hook it serves through the mandatory `hook` function, keyed by pool. A mandatory function keeps the interface uniform: integrators query the same interface regardless of whether stats are served by the hook itself or by a separate contract, and a hook implementing the interface directly simply returns its own address. Keying the pointer by pool also lets one stats contract serve multiple hooks — such as a factory's identically deployed hooks — without a separate deployment per hook.
+Every stats provider reports the hook it serves through the mandatory `hook` function. A mandatory function keeps the interface uniform: integrators query the same interface regardless of whether stats are served by the hook itself or by a separate contract, and a hook implementing the interface directly simply returns its own address.
 
 The pointer also gives integrators a built-in trust distinction. Stats served by the hook itself are authoritative by construction, because the provider address equals the pool's hook address. Stats served by a separate contract carry a self-reported pointer that integrators can verify against the hook deployer or a registry.
 
@@ -275,10 +272,10 @@ interface IHookStats is IERC165 {
         view
         returns (uint256 token0, uint256 token1);
 
-    /// @notice The hook whose stats this contract reports for a given pool.
+    /// @notice The hook whose stats this contract reports.
     /// @dev Returns the contract's own address when the hook implements
-    ///      the interface directly. Reverts for unknown pool keys.
-    function hook(PoolKey calldata key) external view returns (address);
+    ///      the interface directly.
+    function hook() external view returns (address);
 }
 ```
 
