@@ -88,6 +88,8 @@ A separate stats contract is useful when:
 
 When a separate stats contract is used, integrations need a way to discover the stats contract for a given hook or pool, for example through a registry or metadata process. The `hook` function makes a candidate stats contract self-describing, so integrators can verify it against a pool's hook.
 
+When the hook does not implement `IHookStats` itself, its stats MAY come from a separate contract whose link to the hook is self-reported. By default, integrators SHOULD treat the most recently deployed `IHookStats` contract that points to the hook and shares the hook's deployer as canonical.
+
 ### `getReserves`
 
 `getReserves` reports total reserves managed by the hook for the specified pool.
@@ -205,6 +207,8 @@ Every stats provider reports the hook it serves through the mandatory `hook` fun
 
 The pointer also gives integrators a built-in trust distinction. Stats served by the hook itself are authoritative by construction, because the provider address equals the pool's hook address. Stats served by a separate contract carry a self-reported pointer that integrators can verify against the hook deployer or a registry.
 
+Resolving by deployer and recency lets integrators identify a hook's stats automatically in the common case — a hook author deploying an updated stats contract from the same account — while explicit designation through a registry remains available.
+
 ## Backwards Compatibility
 
 This URC does not require changes to Uniswap v4 core.
@@ -292,6 +296,8 @@ Routers should treat `getEffectiveLiquidity` as an availability signal, not as a
 If a stats contract is separate from the hook, registry correctness becomes security-relevant. Integrators should ensure that registered stats contracts are associated with the intended hook and pool.
 
 The `hook` pointer of a separate stats contract is self-reported. Anyone can deploy a contract that points at any hook and reports arbitrary values. Integrators MUST NOT treat the pointer alone as proof of association and SHOULD establish the binding through the hook, its deployer, or a trusted registry, using the pointer as a consistency check. The binding is authoritative only when the stats provider is the hook itself.
+
+The default canonical resolution trusts shared-deployer provenance and recency. An integrator relying on it SHOULD confirm the deployer is the expected hook author, and MAY pin a specific provider to avoid dependence on recency or stale deployer addresses.
 
 Upgradeable stats contracts introduce governance and upgrade risk. Integrators may choose to surface, discount, or label stats from upgradeable providers.
 
