@@ -30,7 +30,7 @@ Conformance is based on externally observable behavior: emitted events, return v
 
 ### HookSwap Event
 
-A custom-accounting hook that conforms to this URC MUST emit `HookSwap` for every successful swap in which it contributes a token delta, whether by filling part or all of the swap or by taking a fee on top of an AMM-executed swap.
+A custom-accounting hook that conforms to this URC MUST emit `HookSwap` for every successful swap in which it returns a token delta, whether by filling part or all of the swap or by taking a fee on top of an AMM-executed swap.
 
 ```solidity
 event HookSwap(
