@@ -13,7 +13,7 @@ This URC defines `IALFHook`, a router-facing Active Liquidity Framework interfac
 
 ## Motivation
 
-Uniswap v4 custom accounting allows hooks to replace or augment the core AMM swap calculation. This enables hooks that wrap assets, route to external venues, deploy active liquidity, use vaults, rehypothecate reserves, settle through off-pool balances, or implement custom liquidity mechanisms.
+Uniswap v4 custom accounting allows hooks to replace, augment, or reduce the core AMM swap calculation. This enables hooks that wrap assets, route to external venues, deploy active liquidity, use vaults, rehypothecate reserves, settle through off-pool balances, or implement custom liquidity mechanisms.
 
 Routers and multiplexers need a standard way to query hooks for indicative quotes, liveness, quote gas limits, and price-bounded simulations.
 
