@@ -12,7 +12,7 @@ This URC defines `HookSwap`, a canonical event through which Uniswap v4 hooks re
 
 ## Motivation
 
-Uniswap v4 custom accounting allows hooks to replace or augment the core AMM swap calculation. This enables hooks that wrap assets, route to external venues, deploy active liquidity, use vaults, rehypothecate reserves, settle through off-pool balances, or implement custom liquidity mechanisms.
+Uniswap v4 custom accounting allows hooks to replace, augment, or reduce the core AMM swap calculation. This enables hooks that wrap assets, route to external venues, deploy active liquidity, use vaults, rehypothecate reserves, settle through off-pool balances, or implement custom liquidity mechanisms.
 
 Indexers and data systems need a swap event that reflects the actual custom-accounting token deltas. The core v4 `Swap` event reports only the portion of a swap executed by the AMM, so swaps whose accounting is altered partly or fully through hook accounting are only partially captured. The core event also includes AMM-specific fields such as `sqrtPriceX96`, `liquidity`, and `tick`, which may be unchanged, irrelevant, or misleading for hooks that bypass the AMM calculation.
 
