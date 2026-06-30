@@ -148,7 +148,7 @@ Custom-accounting hooks may bypass that AMM calculation. For those hooks, `sqrtP
 
 `HookSwap` reports the hook's fill rather than the aggregate swap amounts. Each swap leg is reported by exactly one event — the AMM leg by the core `Swap` event and the hook leg by `HookSwap` — so consumers can add the two without double counting.
 
-Per-leg reporting also keeps emission cheap. A hook knows its own fill in the callback where it sets its return deltas, so it can emit `HookSwap` there. Aggregate reporting was considered and rejected: a hook that fills only part of a swap learns the AMM portion of the final amounts only in `afterSwap`, so aggregate semantics would force such hooks to take on an additional callback and permission solely for event emission, and would be unadoptable by already-deployed hooks whose permissions are fixed in their address.
+Per-leg reporting also keeps emission cheap and permissions minimal. A hook knows its own fill in the callback where it sets its return deltas, so it can emit `HookSwap` there. Aggregate reporting was considered and rejected: a hook that fills only part of a swap learns the AMM portion of the final amounts only in `afterSwap`, so aggregate semantics would force such hooks to take on an additional callback and permission solely for event emission.
 
 ## Backwards Compatibility
 
