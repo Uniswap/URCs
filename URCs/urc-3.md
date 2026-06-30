@@ -12,7 +12,7 @@ This URC defines `IHookStats`, a read-only interface through which Uniswap v4 ho
 
 ## Motivation
 
-Uniswap v4 custom accounting allows hooks to replace or augment the core AMM swap calculation. This enables hooks that wrap assets, route to external venues, deploy active liquidity, use vaults, rehypothecate reserves, settle through off-pool balances, or implement custom liquidity mechanisms.
+Uniswap v4 custom accounting allows hooks to replace, augment, or reduce the core AMM swap calculation. This enables hooks that wrap assets, route to external venues, deploy active liquidity, use vaults, rehypothecate reserves, settle through off-pool balances, or implement custom liquidity mechanisms.
 
 DEX interfaces and routers need a standard way to discover hook TVL and immediately swappable liquidity. PoolManager events may not capture liquidity deployed through external protocols, vaults, ERC-6909 claims, JIT strategies, or other custom mechanisms.
 
