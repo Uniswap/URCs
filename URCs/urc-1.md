@@ -2,8 +2,9 @@
 urc: 1
 title: Uniswap Request for Comment Process
 author: Daniel Gretzke (@gretzke)
-status: Draft
+status: Discussion
 created: 2026-03-30
+discussions-to: https://gov.uniswap.org/t/urc-1-uniswap-request-for-comment-process/26152
 ---
 
 ## Abstract
