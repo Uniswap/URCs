@@ -4,6 +4,7 @@ title: <short descriptive title — do not include the URC number>
 status: Draft
 author: <name(s) and contact — GitHub handle, email, or ENS>
 created: <YYYY-MM-DD>
+discussions-to: <forum thread URL — added when the proposal enters Discussion>
 ---
 
 ## Abstract
