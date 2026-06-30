@@ -65,7 +65,7 @@ interface IALFHook {
     /// @param zeroForOne Swap direction.
     /// @param amountSpecified Negative = exact input, positive = exact output.
     /// @param hookData Empty bytes or a hook-specific payload.
-    /// @return quoteAmount For exact input, expected output. For exact output, required input.
+    /// @return quoteAmount For exact input, expected output. For exact output, expected input.
     function getIndicativeQuote(
         PoolKey calldata key,
         bool zeroForOne,
@@ -115,7 +115,7 @@ If the hook cannot price the requested swap under normal market conditions — f
 
 For exact-input swaps, where `amountSpecified < 0`, `quoteAmount` is the expected output amount.
 
-For exact-output swaps, where `amountSpecified > 0`, `quoteAmount` is the required input amount.
+For exact-output swaps, where `amountSpecified > 0`, `quoteAmount` is the expected input amount.
 
 If `amountSpecified == 0`, the function SHOULD return `0`.
 
@@ -332,7 +332,7 @@ interface IALFHook is IERC165 {
     /// @param zeroForOne Swap direction.
     /// @param amountSpecified Negative = exact input, positive = exact output.
     /// @param hookData Empty bytes or a hook-specific payload.
-    /// @return quoteAmount For exact input, expected output. For exact output, required input.
+    /// @return quoteAmount For exact input, expected output. For exact output, expected input.
     function getIndicativeQuote(
         PoolKey calldata key,
         bool zeroForOne,
