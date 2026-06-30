@@ -266,6 +266,8 @@ interface IHookSwapEvents {
 
 `HookSwap` is emitted by the hook. Consumers should verify that the emitting hook is the hook associated with the pool being indexed.
 
+`HookSwap` values are self-reported by the hook. A hook can emit `amount0`, `amount1`, or `swapFee` that do not match the swap's actual token flows, whether by error or design, and emission carries no protocol-level guarantee of accuracy. Consumers SHOULD treat `HookSwap` as hook-attested data rather than a verified settlement record, and reconcile against on-chain balance changes where correctness is critical.
+
 Indexers MUST NOT infer AMM price, liquidity, or tick movement from `HookSwap`.
 
 Adding `HookSwap` and core `Swap` deltas relies on hooks emitting exactly one event per swap covering only the hook's fill. A hook that emits aggregate amounts or multiple events per swap would cause double counting in consumers that sum the two.
