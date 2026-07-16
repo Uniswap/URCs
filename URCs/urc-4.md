@@ -74,7 +74,6 @@ interface IALFHook {
         bytes calldata hookData
     )
         external
-        view
         returns (uint256 quoteAmount);
 
     /// @notice Whether the hook is generally live and accepting swaps.
@@ -107,10 +106,6 @@ interface IALFHook {
 ### `getIndicativeQuote`
 
 `getIndicativeQuote` returns a non-binding quote for routing purposes.
-
-The function MUST be `view`.
-
-Routers SHOULD invoke it via `staticcall`.
 
 If the hook cannot price the requested swap under normal market conditions — for example because of unsupported directions, unavailable liquidity, or amounts it cannot serve — the function SHOULD return `0` rather than revert.
 
@@ -145,7 +140,7 @@ A hook that returns `true` MAY still be unable to quote or execute a particular 
 
 `maxGas` declares the maximum gas the hook expects `getIndicativeQuote` to consume.
 
-Routers and multiplexers MAY use this value to set gas limits on quote `staticcall`s.
+Routers and multiplexers MAY use this value to set gas limits on quote calls.
 
 Hooks whose quote calls exceed their declared gas budget MAY be deprioritized or excluded by routers.
 
@@ -241,7 +236,7 @@ A hook conforms to this URC if it:
 
 ALF quotes are indicative because hook execution may depend on external venues, attestations, solver data, oracle state, vault availability, or rapidly changing reserves.
 
-A view quote cannot guarantee execution in the presence of state changes, concurrent swaps, MEV, attestation expiry, or external settlement constraints.
+An indicative quote cannot guarantee execution in the presence of state changes, concurrent swaps, MEV, attestation expiry, or external settlement constraints.
 
 Routers must therefore enforce slippage and execution constraints independently.
 
@@ -325,8 +320,7 @@ error MalformedHookData();
 /// @notice Router-facing ALF interface for custom-accounting hooks.
 interface IALFHook is IERC165 {
     /// @notice Get a non-binding indicative quote.
-    /// @dev Callers should invoke via staticcall.
-    ///      Returns 0 when the hook cannot price the swap under normal conditions.
+    /// @dev Returns 0 when the hook cannot price the swap under normal conditions.
     ///      Reverts with MissingHookData or MalformedHookData for missing or
     ///      undecodable hookData.
     /// @param key The pool key.
@@ -341,7 +335,6 @@ interface IALFHook is IERC165 {
         bytes calldata hookData
     )
         external
-        view
         returns (uint256 quoteAmount);
 
     /// @notice Whether the hook is generally live and accepting swaps.
@@ -384,7 +377,7 @@ interface IALFHook is IERC165 {
 
 Hooks that rely on signed or attested payloads must validate authenticity, freshness, replay protection, domain separation, chain ID, hook address, pool key, swap direction, amount constraints, and expiry before using the payload during execution.
 
-Missing or malformed `hookData` causes quote calls to revert. Routers should handle failed staticcalls gracefully and treat reverts as the absence of a quote.
+Missing or malformed `hookData` causes quote calls to revert. Routers should handle failed quote calls gracefully and treat reverts as the absence of a quote.
 
 ## Copyright
 
