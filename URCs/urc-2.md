@@ -2,7 +2,7 @@
 urc: 2
 title: Custom Accounting Hook Swap Event
 author: Eric Sanchirico (@ericneil-sanc), Mark Toda (@MarkToda), Daniel Gretzke (@gretzke), Alice Henshaw (@hensha256)
-status: Discussion
+status: Final
 created: 2026-06-11
 discussions-to: https://gov.uniswap.org/t/urc-2-custom-accounting-hook-swap-event/26154
 ---

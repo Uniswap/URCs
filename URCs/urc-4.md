@@ -2,7 +2,7 @@
 urc: 4
 title: Active Liquidity Framework Hook Interface
 author: Mark Toda (@MarkToda), Daniel Gretzke (@gretzke), Alice Henshaw (@hensha256), Chris Cashwell (@ccashwell)
-status: Discussion
+status: Final
 extends: 2
 created: 2026-06-11
 discussions-to: https://gov.uniswap.org/t/urc-4-active-liquidity-framework-hook-interface/26156
