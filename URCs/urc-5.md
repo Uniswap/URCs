@@ -87,7 +87,7 @@ interface IVenuePolicy {
     /// @param poolId The v4 pool id, or zero for non-v4 venues.
     /// @param inbound True for transfers into the venue, false for out of it.
     /// @param allowed The new declared permission for that direction.
-    event VenueStatusChanged(address indexed venue, bytes32 indexed poolId, bool inbound, bool allowed);
+    event VenueStatusChanged(address indexed venue, bool inbound, bool allowed);
 
     /// @notice Emitted when either restriction flag or the allowlist changes.
     ///         Consumers invalidate cached external-venue permissions.
