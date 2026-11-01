@@ -104,7 +104,7 @@ main
     ///         canonical PoolManager. Exhaustive only in Enforced mode.
     /// @dev Full keys, not ids, so a caller can build a route without an indexer.
     ///      Empty means no preferred pools or, in Enforced mode, no allowed v4 pools.
-    function canonicalPools() external view returns (PoolKey[] memory);
+   function canonicalPool(PoolId poolId) external view returns (bool);
 
     /// @notice Whether the token's declared policy permits a transfer into
     ///         (`inbound`) or out of a venue. A statement of policy, not a
