@@ -39,7 +39,7 @@ contract VenueGatedToken is ERC20, ERC165, IVenuePolicy {
 
     /// @notice Positive means tokens owed into the manager; negative means owed out.
     /// @dev Persists across unlocks in one transaction, and clears at its end.
-    int256 public transient canonicalNet;
+    int256 public canonicalNet;
 
     constructor(address poolManager_, address blockedVenue_) ERC20("Gated", "GATED") {
         require(poolManager_ != address(0));
