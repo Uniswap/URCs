@@ -1,7 +1,8 @@
 ---
 urc: 5
 title: Token Venue Policy
-status: Discussion
+status: Last Call
+last-call-deadline: 2026-12-07
 author: 0xBeans
 created: 2026-09-15
 discussions-to: https://gov.uniswap.org/t/urc-5-token-venue-policy/26307
